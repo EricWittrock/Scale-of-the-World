@@ -1,0 +1,103 @@
+<html>
+<head>
+  <title>Scale of the World</title>
+
+  <script>
+  const _BUILD_ = "DEV" // DEV || FINAL
+  let USE_SPRITESHEET = true;
+
+  if(_BUILD_ === "DEV"){
+
+    USE_SPRITESHEET = false; // load textures individualy from image storage file
+
+    // add dbug.js file for development functions
+    window.addEventListener("load",function(){
+      let script = document.createElement("script");
+      script.src = "./js/dbug.js";
+      document.body.appendChild(script);
+    })
+  }
+  </script>
+
+</head>
+<body>
+
+
+<div id="canvas_container" style="width:100%; text-align:center"></div>
+
+<!-- rope editor window -->
+<div hidden id="ropeDbugEditor" style="user-select:none; width:150px; background-color:#fff3d4; font-family:Courier New; border:1px solid black; padding:5px; position:fixed; left:0px; top:0px">
+<h3>Rope Editor</h3>
+<hr>
+<button id="make_rope">Make Rope</button>
+<br>
+<span>max frame:</span><input id="maxframe" type="number" value=0; style="width:70px"></input><br>
+<span>frame:<span><span id="frame_text">0</span><br>
+<input id="frameRange" type="range"></input><br>
+<button id="prevFrame"><</button>
+<button id="nextFrame">></button>
+<br><br>
+<span>Go To Keyframe</span><br>
+<button id="selectPrevKey">[<]</button>
+<button id="selectNextKey">[>]</button>
+<br><br>
+<button id="dupLastKey">copy previous key</button><br>
+<button id="addDefaultKey">copy first key</button><br>
+<button id="delKey">delete this keyframe</button>
+<br><br>
+<span>smoothness:</span><input id="smoothness_input" type="number" style="width:50px" value=10 step=1></input>
+<button id="setSmoothnessAll">Set All</button>
+<br><br>
+<span><u>for dragging</u></span>
+<br>
+<span>stiffness:</span><input id="stiffness_factor" type="number" style="width:50px" value=2 step=0.25></input>
+<span>range....:</span><input id="range_factor" type="number" style="width:50px" value=3 step=0.25></input>
+<br>
+<button id="insert_camPoint">Ins CamPoint</button>
+<br>
+<button id="print_camPoints">PRINT CamPoints</button>
+<br>
+<button id="print_data">PRINT DATA</button>
+<br>
+<button id="print_positions">PRINT POS</button>
+<br>
+<button id="play_toggle">(PAUSE)</button>
+
+<div id="timeline" style="background-image:repeating-linear-gradient(to right, rgb(24 68 96), rgb(24 68 96) 3px, rgb(26, 57, 88) 3px, rgb(26, 57, 88) 20px); position:fixed; left:5%; width:90%; bottom:10px; height:30px; box-shadow: 0px 4px 11px 0px #0c2c3e; border:4px solid #2a698a; border-radius:5px"></div>
+
+</div>
+
+<!-- rope nodes -->
+<div id="ropes" style="position:fixed; left:300px; top:300px"></div>
+<script>
+let dompoints = [];
+for(let i = 0; i<100; i++){
+  let p = document.createElement('div');
+  p.hidden=true;
+  Object.assign(p.style,{width:"20px", height:"20px", border:"1px solid black", backgroundColor:"cyan", borderRadius:"100px", position:"absolute", top:"100px", left:(i*25)+"px"})
+  dompoints.push(p);
+  document.getElementById("ropes").appendChild(p);
+  p.addEventListener("mousedown",function(){
+    dragPoint = i;
+  })
+  window.addEventListener("mouseup",function(){
+    dragPoint = null;
+  })
+}
+</script>
+
+
+<script src="./js/pixi.min.js"></script>
+<script src="./js/data.js"></script>
+<script src="./js/graphics.js"></script>
+<script src="./js/main.js"></script>
+<script src="./js/customsprites.js"></script>
+<script src="./js/revoltfx.min.js"></script>
+
+
+
+<br>
+<span hidden id="dbugInfo" style="background-color:#102124; color:#dcf0fa; font-Family:Arial"></span>
+
+</body>
+</html>
